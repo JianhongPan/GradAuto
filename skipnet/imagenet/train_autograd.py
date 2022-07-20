@@ -201,19 +201,21 @@ def validate(args, val_loader, model):
         end = time.time()
 
         if i % args.print_freq == 0 or (i == (len(val_loader) - 1)):
-            cp_ori = ((sum(skip_ori_ratios.avg) + 1) / (skip_ori_ratios.len + 1)) * 100
-            cp = ((sum(skip_ratios.avg) + 1) / (skip_ratios.len + 1)) * 100
-            logging.info('***Computation Percentage: from {:.3f}% to {:.3f}%'.format(cp_ori, cp))
+            cp_inc_ori = 1 - ((sum(skip_ori_ratios.avg) + 1) / (skip_ori_ratios.len + 1))
+            cp_inc_cur = 1 - ((sum(skip_ratios.avg) + 1) / (skip_ratios.len + 1))
+            recovery = (cp_inc_ori - cp_inc_cur) / cp_inc_ori * 100
+            
+            logging.info('***Computation Recovery: {:.3f}%'.format(recovery))
             logging.info('***Original prec: from {:.5f} to {:.5f}'.format(prec1s_ori.avg, prec1s_mod.avg))
             logging.info('***Final Iter: {:.5f}'.format(iters.avg))
             logging.info('***Final Var: {:.5f}'.format(vars.avg))
 
     # always keep the first block
-    cp = ((sum(skip_ori_ratios.avg) + 1) / (skip_ori_ratios.len + 1)) * 100
-    logging.info('***Original Computation Percentage: {:.3f} %'.format(cp))
-
-    cp = ((sum(skip_ratios.avg) + 1) / (skip_ratios.len + 1)) * 100
-    logging.info('***Final Computation Percentage: {:.3f} %'.format(cp))
+    cp_inc_ori = 1 - ((sum(skip_ori_ratios.avg) + 1) / (skip_ori_ratios.len + 1))
+    cp_inc_cur = 1 - ((sum(skip_ratios.avg) + 1) / (skip_ratios.len + 1))
+    recovery = (cp_inc_ori - cp_inc_cur) / cp_inc_ori * 100
+    
+    logging.info('***Final Recovery: {:.3f} %'.format(recovery))
 
     logging.info('***Final Var: {:.5f}'.format(iters.avg))
 

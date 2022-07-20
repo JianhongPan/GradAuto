@@ -11,6 +11,8 @@ conda install pytorch=1.10 torchvision cudatoolkit=<the CUDA version you want> n
 
 2. To prepare ImageNet dataset, please follow this [link](https://github.com/facebook/fb.resnet.torch/blob/master/INSTALL.md#download-the-imagenet-dataset).
 
+3. To prepare SkipNet pretrained model, please follow this [link](https://github.com/ucbdrive/skipnet/tree/master/imagenet).
+
 ## Training 
 1. To train the adversarial samples with $K=1$, run
 ```
